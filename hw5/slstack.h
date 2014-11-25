@@ -39,12 +39,12 @@ public:
 // pre-conditions:
 // post-conditions: creates new 
 template <typename T>
-SLStack<T>::SLStack(): _data(nullptr)
+SLStack<T>::SLStack()
 {
 }
 
 template <typename T>
-SLStack<T>::SLStack(const SLStack<T> & other): _data(other)
+SLStack<T>::SLStack(const SLStack<T> & other)
 {
 }
 
@@ -70,13 +70,13 @@ catch(...)
 template <typename T>
 SLStack<T>::~SLStack()
 {
-	delete _data;
+	//delete _data;
 }
 
 template <typename T>
 bool SLStack<T>::empty() const
 {
-  if (_data.size() != nullptr) return true;
+  //if (_data.size() != nullptr) return true;
 	return false;
 }
 
@@ -89,7 +89,7 @@ T & SLStack<T>::top()
 template <typename T>
 const T & SLStack<T>::top() const
 {
-    return _data.get_front() const;
+    return _data.get_front() ;
 }
 
 template <typename T>

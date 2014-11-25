@@ -61,7 +61,7 @@ public:
     
     size_type size() const;
     template <typename InputIterator>
-    void read(const InputIterator begin,const InputIterator end);
+    void read(InputIterator begin, InputIterator end);
 	template <typename OutputIterator>
     void write(OutputIterator end) const;
     void reverse();
@@ -79,24 +79,29 @@ SList<T>::SList():_head(nullptr)
 }
 
 template <typename T>
-SList<T>::SList(const SList & other)
+SList<T>::SList(const SList<T> & other)
 {
-/*	LLNode<T> * other_walker=other._head;
+	
+	LLNode<T> * other_walker=other._head;
 	LLNode<T> * this_walker=_head;
 	while(other_walker!=nullptr)  //while the other one still has nodes
 	{
-		this_walker->next_=new LLNode(other_walker->data_);//copy others data over
+		this_walker->next_=new LLNode<T>(other_walker->data_);//copy others data over
 		this_walker=this_walker->next_;  //move point in our list forward
 		other_walker=other_walker->next_; // move pointer in other list forward one
 	}
-	reverse();
-	*/
+	
+	
 }
 
 template <typename T>
 SList<T> & SList<T>::operator=(const SList<T> &rhs)
 {
-    //TODO
+	/*if (!(&rhs == this))
+	{	
+		SList<T> temp(rhs);
+		std::swap(*this, temp);
+	}*/
     return *this;
 }
 
@@ -107,30 +112,74 @@ SList<T>::~SList()
 }
 
 template <typename T>
-typename SList<T>::size_type SList<T>::size() const
+std::size_t SList<T>::size() const
 {
-    //TODO
-    return 0;
+    std::size_t counter = 0;
+	LLNode<T> * walker;
+	walker = _head;
+	while (walker != nullptr)
+	{
+		counter++;
+		walker = walker->next_;
+	}
+	return counter;
 }
 
 template <class T>
 template <typename InputIterator>
-void SList<T>::read(const InputIterator begin,const InputIterator end)
+void SList<T>::read(InputIterator begin,InputIterator end)
 {
-    //TODO
+	/*
+	LLNode<T> * walker;
+	walker = _head;
+	while (begin != end)
+		{
+			if( walker != nullptr)
+			{
+				walker->data_ = *begin;
+				begin++;
+				walker = walker->next_;
+			}
+			else
+			{
+			// may need try-catch block //	
+				LLNode<T> * temp = new LLNode<T>(*begin);
+				walker->next_ = temp; // program sticks here
+				begin++;
+				walker = walker->next_;
+			}
+	
+		}
+	  */ 
 }
 
 template<class T>
 template <typename OutputIterator>
 void SList<T>::write(OutputIterator begin) const
 {
-    
+ //   LLNode<T> * walker = _head;
+	//while (walker->next_ != nullptr)
+	//{
+	//	*begin = walker->data_;
+	//	begin++;
+	//	walker= walker->next_;
+	//}
 }
 
 template <typename T>
 void SList<T>::reverse()
 {
-    
+    LLNode<T> *save = nullptr;
+	LLNode<T> *temp = nullptr;
+	while(_head != nullptr)
+	{
+		temp = _head;
+		_head = _head->next_;
+		temp->next_ = save;
+		save = temp;
+	}
+	_head = save;
+
 }
 
 template <typename T>
