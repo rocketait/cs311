@@ -19,8 +19,6 @@ class SLStack
 public:
     typedef std::size_t size_type;
     typedef T value_type;
-    typedef T * iterator;
-    typedef const T * const_iterator;
     
     SLStack();
     SLStack(const SLStack & other);
@@ -28,9 +26,9 @@ public:
     ~SLStack();
     
     bool empty() const;
-    iterator top();
-    const_iterator top() const;
-    void push(size_type val);
+    T & top();
+    const T & top() const;
+    void push(T val);
     void pop();
     
 //private:
@@ -52,13 +50,12 @@ SLStack<T>::SLStack(const SLStack<T> & other)
 template <typename T>
 SLStack<T> & SLStack<T>::operator=(const SLStack<T> &rhs)
 {
-    
+    return *this;
 }
 
 template <typename T>
 SLStack<T>::~SLStack()
 {
-    delete _data;
 }
 
 template <typename T>
@@ -68,23 +65,21 @@ bool SLStack<T>::empty() const
 }
 
 template <typename T>
-typename SLStack<T>::iterator SLStack<T>::top()
+T & SLStack<T>::top()
 {
     //TODO
-    iterator i;
-    return i;
+	return _data.get_front();
 }
 
 template <typename T>
-typename SLStack<T>::const_iterator SLStack<T>::top() const
+const T & SLStack<T>::top() const
 {
     //TODO
-    const_iterator i;
-    return i;
+    return _data.get_front();
 }
 
 template <typename T>
-void SLStack<T>::push(size_type va)
+void SLStack<T>::push(T va)
 {
     
 }

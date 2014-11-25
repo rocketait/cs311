@@ -11,14 +11,48 @@
 #include <cstdlib> //for std::size_t
 #include <algorithm> //for std::swap
 
+
+// struct LLNode                                                   // *
+// Linked List node, with client-specified value type              // *
+// Invariants:                                                     // *
+//     Either next_ is NULL, or next_ points to an LLNode,         // *
+//      allocated with new, owned by *this.                        // *
+template <typename ValueType>                                      // *
+struct LLNode {                                                    // *
+    ValueType data_;  // Data for this node                        // *
+    LLNode * next_;   // Ptr to next node, or NULL if none         // *
+                                                                   // *
+    // The following simplify creation & destruction               // *
+                                                                   // *
+    // 1- & 2-param ctor                                           // *
+    // Pre:                                                        // *
+    //     theNext, if passed, is either NULL,                     // *
+    //      or else it points to an LLNode, allocated with new,    // *
+    //      with ownership transferred to *this.                   // *
+    // Post:                                                       // *
+    //     data_ == theData.                                       // *
+    //     If next_ passed, then next_ == theNext.                 // *
+    //      otherwise, next_ is NULL.                              // *
+    explicit LLNode(const ValueType & theData,                     // *
+                    LLNode * theNext = NULL)                       // *
+        :data_(theData), next_(theNext)                            // *
+    {}                                                             // *
+                                                                   // *
+    // dctor                                                       // *
+    // Pre: None.                                                  // *
+    // Post: None. (next_ delete'd)                                // *
+    ~LLNode()                                                      // *
+    { delete next_; }                                              // *
+};                                                                 // *
+
+
+
 template <typename T>
 class SList
 {
 public:
     typedef std::size_t size_type;
     typedef T value_type;
-    //typedef T * iterator;
-    //typedef const T * const_iterator;
 
     SList();
     SList(const SList &other);
@@ -26,23 +60,26 @@ public:
     ~SList();
     
     size_type size() const;
-    
-    void read(T begin, T end);
-    void write(T begin) const;
+    template <typename InputIterator>
+    void read(const InputIterator begin,const InputIterator end);
+	template <typename OutputIterator>
+    void write(OutputIterator end) const;
     void reverse();
-    
-//private:
-    value_type _data;
-    SList * _next;
+    const value_type & get_front() const;
+	value_type & get_front();
+	void remove_front();
+	void insert_front(T & dataIn);
+private:
+    LLNode<T> * _head;
 };
 
 template <typename T>
-SList<T>::SList():_data(), _next(NULL)
+SList<T>::SList():_head(nullptr)
 {
 }
 
 template <typename T>
-SList<T>::SList(const SList & other):_data(other._data), _next(other._next)
+SList<T>::SList(const SList & other):_head(other._head)
 {
 }
 
@@ -56,7 +93,7 @@ SList<T> & SList<T>::operator=(const SList<T> &rhs)
 template <typename T>
 SList<T>::~SList()
 {
-    delete _next;
+    delete _head;
 }
 
 template <typename T>
@@ -66,20 +103,46 @@ typename SList<T>::size_type SList<T>::size() const
     return 0;
 }
 
-template <typename T>
-void SList<T>::read(T begin, T end)
+template <class T>
+template <typename InputIterator>
+void SList<T>::read(const InputIterator begin,const InputIterator end)
 {
     //TODO
 }
 
-template <typename T>
-void SList<T>::write(T begin) const
+template<class T>
+template <typename OutputIterator>
+void SList<T>::write(OutputIterator begin) const
 {
     
 }
 
 template <typename T>
 void SList<T>::reverse()
+{
+    
+}
+
+template <typename T>
+const T & SList<T>::get_front() const
+{
+   return _head->data_;
+}
+
+template <typename T>
+T & SList<T>::get_front()
+{
+    return _head->data_;
+}
+
+template <typename T>
+void SList<T>::remove_front()
+{
+    
+}
+
+template <typename T>
+void SList<T>::insert_front(T & dataIn)
 {
     
 }
