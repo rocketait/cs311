@@ -35,59 +35,73 @@ public:
     SList<T> _data;
 };
 
+// Default SLStack constructor
+// pre-conditions:
+// post-conditions: creates new 
 template <typename T>
-SLStack<T>::SLStack()
+SLStack<T>::SLStack(): _data(nullptr)
 {
-    
 }
 
 template <typename T>
-SLStack<T>::SLStack(const SLStack<T> & other)
+SLStack<T>::SLStack(const SLStack<T> & other): _data(other)
 {
-    
 }
 
 template <typename T>
 SLStack<T> & SLStack<T>::operator=(const SLStack<T> &rhs)
 {
-    return *this;
+	/*
+try
+{
+   value_type temp = new SList;
+}
+catch(...)
+{
+	delete temp;
+	throw std::bad_alloc("Could not allocate memory");
+}
+   temp._data = rhs._data;
+   *this._data = temp._data;
+  */
+   return *this;
 }
 
 template <typename T>
 SLStack<T>::~SLStack()
 {
+	delete _data;
 }
 
 template <typename T>
 bool SLStack<T>::empty() const
 {
-    return true;
+  if (_data.size() != nullptr) return true;
+	return false;
 }
 
 template <typename T>
 T & SLStack<T>::top()
 {
-    //TODO
 	return _data.get_front();
 }
 
 template <typename T>
 const T & SLStack<T>::top() const
 {
-    //TODO
-    return _data.get_front();
+    return _data.get_front() const;
 }
 
 template <typename T>
-void SLStack<T>::push(T va)
+void SLStack<T>::push(T val)
 {
-    
+    _data.insert_front(val);
 }
 
 template <typename T>
 void SLStack<T>::pop()
 {
-    
+	_data.remove_front();   
 }
 
 
