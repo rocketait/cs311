@@ -79,8 +79,18 @@ SList<T>::SList():_head(nullptr)
 }
 
 template <typename T>
-SList<T>::SList(const SList & other):_head(other._head)
+SList<T>::SList(const SList & other)
 {
+/*	LLNode<T> * other_walker=other._head;
+	LLNode<T> * this_walker=_head;
+	while(other_walker!=nullptr)  //while the other one still has nodes
+	{
+		this_walker->next_=new LLNode(other_walker->data_);//copy others data over
+		this_walker=this_walker->next_;  //move point in our list forward
+		other_walker=other_walker->next_; // move pointer in other list forward one
+	}
+	reverse();
+	*/
 }
 
 template <typename T>
