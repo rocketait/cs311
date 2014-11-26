@@ -32,7 +32,8 @@ struct LLNode {                                                    // *
     // Post:                                                       // *
     //     data_ == theData.                                       // *
     //     If next_ passed, then next_ == theNext.                 // *
-    //      otherwise, next_ is NULL.                              // *
+    //      otherwise, next_ is NULL. 
+	//   strong gernety// *
     explicit LLNode(const ValueType & theData,                     // *
                     LLNode * theNext = NULL)                       // *
         :data_(theData), next_(theNext)                            // *
@@ -55,8 +56,8 @@ public:
     typedef T value_type;
 
     SList();
-    SList(const SList &other);
-    SList & operator=(const SList &rhs);
+    SList(const SList<T> &other);
+    SList & operator=(SList<T> rhs);
     ~SList();
     
     size_type size() const;
@@ -70,38 +71,43 @@ public:
 	void remove_front();
 	void insert_front(T & dataIn);
 private:
+	size_type _size;
     LLNode<T> * _head;
 };
 
 template <typename T>
-SList<T>::SList():_head(nullptr)
+SList<T>::SList(): _size(0), _head(nullptr)
 {
 }
 
+
+//strong
 template <typename T>
-SList<T>::SList(const SList<T> & other)
+SList<T>::SList(const SList<T> & other): _size(0), _head(nullptr)
 {
-	
-	LLNode<T> * other_walker=other._head;
-	LLNode<T> * this_walker=_head;
-	while(other_walker!=nullptr)  //while the other one still has nodes
+	LLNode<T> * other_walker = other._head;
+	try
 	{
-		this_walker->next_=new LLNode<T>(other_walker->data_);//copy others data over
-		this_walker=this_walker->next_;  //move point in our list forward
-		other_walker=other_walker->next_; // move pointer in other list forward one
+		while (other_walker != nullptr)  //while the other one still has nodes
+		{
+			insert_front(other_walker->data_);
+			other_walker = other_walker->next_;  // move to next data;
+		}
+		reverse();
 	}
-	
-	
+	catch (...)
+	{
+		delete _head;
+	}
 }
 
+
 template <typename T>
-SList<T> & SList<T>::operator=(const SList<T> &rhs)
+SList<T> & SList<T>::operator=(SList<T> rhs)
 {
-	/*if (!(&rhs == this))
-	{	
-		SList<T> temp(rhs);
-		std::swap(*this, temp);
-	}*/
+	//copy is made in pram passing
+	_head = rhs._head;  //swap
+	_size = rhs._size;
     return *this;
 }
 
@@ -114,15 +120,7 @@ SList<T>::~SList()
 template <typename T>
 std::size_t SList<T>::size() const
 {
-    std::size_t counter = 0;
-	LLNode<T> * walker;
-	walker = _head;
-	while (walker != nullptr)
-	{
-		counter++;
-		walker = walker->next_;
-	}
-	return counter;
+	return _size;
 }
 
 template <class T>
@@ -200,10 +198,12 @@ void SList<T>::remove_front()
     
 }
 
+//strong
 template <typename T>
 void SList<T>::insert_front(T & dataIn)
 {
-    
+	_head = new LLNode<T>(dataIn,_head);
+	_size=_size++;
 }
 
 
