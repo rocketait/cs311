@@ -12,45 +12,42 @@
 #include <algorithm> //for std::swap
 
 
-// struct LLNode (created by Prof. Hartman for CS 331, Assignment #5)                                       
-// Linked List node, with client-specified value type   
-// Invariants:                                                     
-//     Either next_ is NULL, or next_ points to an LLNode,         
-//      allocated with new, owned by *this.      
-// This struct, and it's member functions, are exception-neutral
-template <typename ValueType>                                      
-struct LLNode {                                                    
-    ValueType data_;  // Data for this node                        
-    LLNode * next_;   // Ptr to next node, or NULL if none         
-                                                                                                                                               
-    // 1- & 2-param ctor   
-	// Requirement on Types: copy constructor
-    // Pre:                                                        
-    //     theNext, if passed, is either NULL,                     
-    //      or else it points to an LLNode, allocated with new,    
-    //      with ownership transferred to *this.                   
-    // Post:                                                       
-    //     data_ == theData.                                       
-    //     If next_ passed, then next_ == theNext.                 
+// struct LLNode                                                   // *
+// Linked List node, with client-specified value type              // *
+// Invariants:                                                     // *
+//     Either next_ is NULL, or next_ points to an LLNode,         // *
+//      allocated with new, owned by *this.                        // *
+template <typename ValueType>                                      // *
+struct LLNode {                                                    // *
+    ValueType data_;  // Data for this node                        // *
+    LLNode * next_;   // Ptr to next node, or NULL if none         // *
+                                                                   // *
+    // The following simplify creation & destruction               // *
+                                                                   // *
+    // 1- & 2-param ctor                                           // *
+    // Pre:                                                        // *
+    //     theNext, if passed, is either NULL,                     // *
+    //      or else it points to an LLNode, allocated with new,    // *
+    //      with ownership transferred to *this.                   // *
+    // Post:                                                       // *
+    //     data_ == theData.                                       // *
+    //     If next_ passed, then next_ == theNext.                 // *
     //      otherwise, next_ is NULL. 
-	//	Strong Guarantee
-    explicit LLNode(const ValueType & theData,LLNode * theNext = NULL):data_(theData), next_(theNext)                           
-    {}                                                             
-                                                                  
-    // dctor  
-	// Requirement on Types: none
-    // Pre: None.                                                 
-    // Post: None. (next_ delete'd)   
-	// No-Throw Guarantee
-    ~LLNode()                                                      
-    { delete next_; }                                              
-};                                                                 
+	//   strong gernety// *
+    explicit LLNode(const ValueType & theData,                     // *
+                    LLNode * theNext = NULL)                       // *
+        :data_(theData), next_(theNext)                            // *
+    {}                                                             // *
+                                                                   // *
+    // dctor                                                       // *
+    // Pre: None.                                                  // *
+    // Post: None. (next_ delete'd)                                // *
+    ~LLNode()                                                      // *
+    { delete next_; }                                              // *
+};                                                                 // *
 
 
 
-
-
-//todo!@!!
 template <typename T>
 class SList
 {
@@ -71,14 +68,13 @@ public:
     const value_type & get_front() const;
 	value_type & get_front();
 	void remove_front();
-	void insert_front(const T & dataIn);
+	void insert_front(T & dataIn);
 	void swap(SList<T> & other);
 private:
 	size_type _size;
     LLNode<T> * _head;
 };
 
-//no throw
 template <typename T>
 SList<T>::SList(): _size(0), _head(nullptr)
 {
@@ -105,7 +101,7 @@ SList<T>::SList(const SList<T> & other): _size(0), _head(nullptr)
 	}
 }
 
-//strong
+
 template <typename T>
 SList<T> & SList<T>::operator=(SList<T> rhs)
 {
@@ -114,22 +110,18 @@ SList<T> & SList<T>::operator=(SList<T> rhs)
     return *this;
 }
 
-//no throw
 template <typename T>
 SList<T>::~SList()
 {
     delete _head;
 }
 
-//no throw
 template <typename T>
 std::size_t SList<T>::size() const
 {
 	return _size;
 }
 
-
-//strong
 template <class T>
 template <typename InputIterator>
 void SList<T>::read(InputIterator begin,InputIterator end)
@@ -144,9 +136,6 @@ void SList<T>::read(InputIterator begin,InputIterator end)
 	swap(temp);
 }
 
-
-
-//basic
 template<class T>
 template <typename OutputIterator>
 void SList<T>::write(OutputIterator begin) const
@@ -160,8 +149,6 @@ void SList<T>::write(OutputIterator begin) const
 	}
 }
 
-
-//no throw
 template <typename T>
 void SList<T>::reverse()
 {
@@ -178,44 +165,31 @@ void SList<T>::reverse()
 	_head=save;
 }
 
-
-//no throw
 template <typename T>
 const T & SList<T>::get_front() const
 {
    return _head->data_;
 }
 
-
-//no throw
 template <typename T>
 T & SList<T>::get_front()
 {
     return _head->data_;
 }
 
-
-//no trow
 template <typename T>
 void SList<T>::remove_front()
 {
-	LLNode<T> *save = _head;
-	_head = _head->next_;
-	save->next_=nullptr;
-	_size--;
-	delete save;
+    
 }
 
 //strong
 template <typename T>
-void SList<T>::insert_front(const T & dataIn)
+void SList<T>::insert_front(T & dataIn)
 {
 	_head = new LLNode<T>(dataIn,_head);
 	_size++;
 }
-
-
-//no throw
 template <typename T>
 void SList<T>::swap(SList<T> & other)
 {
