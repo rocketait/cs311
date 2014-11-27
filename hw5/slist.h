@@ -132,7 +132,7 @@ void SList<T>::read(InputIterator begin,InputIterator end)
 		temp.insert_front(*begin);
 		begin++;
 	}
-	reverse();
+	temp.reverse();
 	swap(temp);
 }
 
@@ -151,50 +151,18 @@ void SList<T>::write(OutputIterator begin) const
 
 template <typename T>
 void SList<T>::reverse()
-{/*
-	if(_head==nullptr) //0 times
-		return;
-	if(_head->next_==nullprt) //1 time
-		return;
-    LLNode<T> *save = _head;
-	LLNode<T> *temp = _head->next_;//where the next right is (may be null)
+{
+    LLNode<T> *save = nullptr;
+	LLNode<T> *temp;
 
-	_head=temp;
-	save->next=nullptr;
-	if(_head->next_==nullptr)
-		return;
-	temp=_head->next_;
-	while
-
-	if(_head->next_==nullptr); // last item
-		return;
-
-	save=_head;  //save where head was at
-	_head=temp; // head goes right 1
-	temp=_head->next_; // where the next thing to the right is (may be null)
-	_head->next_=save; // point back to the left;
-
-
-
-
-
-	old= _head;
-	_head = _head->next_;
-	_temp = _head->next_;
-	_head->next_=_temp;
-
-
-	*/
-
-	/*while(_head != nullptr)
+	while(_head!=nullptr)//heads not past the last node
 	{
-		temp = _head;
-		_head = _head->next_;
-		temp->next_ = save;
-		save = temp;
+		temp = _head->next_;  //save where head is pointing
+		_head->next_=save;  //chage where head is ponting to right spot
+		save = _head;  //save is current
+		_head=temp;  //incement head forward (left)
 	}
-	_head = save;*/
-
+	_head=save;
 }
 
 template <typename T>
