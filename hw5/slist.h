@@ -50,7 +50,12 @@ struct LLNode {
 
 
 
-//todo!@!!
+// class SList
+// Creates a Linked List. It also has a function to reverse the Linked List
+// Invariants:
+//      _size >= 0
+//      _head points to a null terminating linked list
+// This Class, and it's member functions, are exception-neutral
 template <typename T>
 class SList
 {
@@ -78,14 +83,26 @@ private:
     LLNode<T> * _head;
 };
 
-//no throw
+// Default Constructor
+// Sets size to 0 and head to nullptr
+// Requirement on Types: None.
+// Pre: None.
+// Post:
+//      _size = 0, _head = nullptr
+// no throw guarantee
 template <typename T>
 SList<T>::SList(): _size(0), _head(nullptr)
 {
 }
 
-
-//strong
+// Copy Constructor
+// copies from one SList to new SList
+// Requirement on Types: None.
+// Pre: None.
+// Post:
+//      _size = other._size
+//      all nodes in the other SList are copied into new SList
+// strong guarantee
 template <typename T>
 SList<T>::SList(const SList<T> & other): _size(0), _head(nullptr)
 {
@@ -105,7 +122,13 @@ SList<T>::SList(const SList<T> & other): _size(0), _head(nullptr)
 	}
 }
 
-//strong
+// Copy Assignment
+// copies rhs to lhs and returns lhs
+// Requirement on Types: None.
+// Pre: None.
+// Post:
+//      *this = rhs
+// strong guarantee
 template <typename T>
 SList<T> & SList<T>::operator=(SList<T> rhs)
 {
@@ -114,14 +137,25 @@ SList<T> & SList<T>::operator=(SList<T> rhs)
     return *this;
 }
 
-//no throw
+// Deconstructor
+// deletes linked list
+// Requirement on Types: None.
+// Pre: None.
+// Post: None.
+// no throw guarantee
 template <typename T>
 SList<T>::~SList()
 {
     delete _head;
 }
 
-//no throw
+// size function
+// returns size of linked list
+// Requirement on Types: None.
+// Pre: None.
+// Post:
+//      returns _size
+// no throw guarantee
 template <typename T>
 std::size_t SList<T>::size() const
 {
@@ -129,7 +163,18 @@ std::size_t SList<T>::size() const
 }
 
 
-//strong
+// read function
+// Given two input iterators that specify a range, in the usual manner. Returns nothing.
+// The value type of the iterators is assumed to be the same as that of the Linked List.
+// When the function is done, the items in the range are contained in the Linked List,
+// in the same order. Whatever data the Linked List previously contained have been discarded.
+// Requirement on Types: Able to dereference and increment inputIterator
+// Pre: begin <= end
+// Post:
+// old linked list is
+// linked list holds the range from begin to end
+//
+//strong guarantee
 template <class T>
 template <typename InputIterator>
 void SList<T>::read(InputIterator begin,InputIterator end)
@@ -146,7 +191,12 @@ void SList<T>::read(InputIterator begin,InputIterator end)
 
 
 
-//basic
+// write function
+// Writes the items in the Linked List to the iterator, in order. Assumes that the iterator references the beginning of a range with enough space.
+// Requirement on Types: Able to dereference and increment OutputIterator
+// Pre: begin points to the beginning of a Linked List
+// Post:
+// strong guarantee
 template<class T>
 template <typename OutputIterator>
 void SList<T>::write(OutputIterator begin) const
@@ -160,8 +210,12 @@ void SList<T>::write(OutputIterator begin) const
 	}
 }
 
-
-//no throw
+// reverse function
+// Linked List contains the same data items, but in the reverse order.
+// Requirement on Types: None
+// pre: none
+// post: linked list in reverse order
+// no throw guarentee
 template <typename T>
 void SList<T>::reverse()
 {
@@ -178,8 +232,12 @@ void SList<T>::reverse()
 	_head=save;
 }
 
-
-//no throw
+// const get_front function
+// grabs the first node's data
+// Requirements on Types: none
+// pre: none
+// post: returns _head->data_
+// no throw guarantee
 template <typename T>
 const T & SList<T>::get_front() const
 {
@@ -187,15 +245,25 @@ const T & SList<T>::get_front() const
 }
 
 
-//no throw
+// get_front function
+// grabs the first node's data
+// Requirements on Types: none
+// pre: none
+// post: returns _head->data_
+// no throw guarantee
 template <typename T>
 T & SList<T>::get_front()
 {
     return _head->data_;
 }
 
-
-//no trow
+// remove_front function
+// removes first node from the linked list
+// Requirements on Types: none
+// pre: none
+// post: _size--
+//       _head = _head->next_
+// no throw guarantee
 template <typename T>
 void SList<T>::remove_front()
 {
@@ -206,7 +274,14 @@ void SList<T>::remove_front()
 	delete save;
 }
 
-//strong
+// insert_front function
+// inserts new node to the front of the linked list
+// Requirements on Types: none
+// pre: none
+// post: _size++
+//       _head = new node with dataIn
+//       new node points to old _head
+// strong guarantee
 template <typename T>
 void SList<T>::insert_front(const T & dataIn)
 {
@@ -214,8 +289,15 @@ void SList<T>::insert_front(const T & dataIn)
 	_size++;
 }
 
-
-//no throw
+// swap function
+// swaps two linked lists
+// Requirements on Types: none
+// pre: none
+// post: _size = other._size
+//       _head = other._head
+//       other._head = _head
+//       other._size = _size
+// no throw guarantee
 template <typename T>
 void SList<T>::swap(SList<T> & other)
 {
