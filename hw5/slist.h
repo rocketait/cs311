@@ -33,7 +33,7 @@ struct LLNode {
     //     data_ == theData.                                       
     //     If next_ passed, then next_ == theNext.                 
     //      otherwise, next_ is NULL. 
-	//	Strong Guarantee
+	//	Strong exception guarantee
     explicit LLNode(const ValueType & theData,LLNode * theNext = NULL):data_(theData), next_(theNext)                           
     {}                                                             
                                                                   
@@ -41,7 +41,7 @@ struct LLNode {
 	// Requirement on Types: none
     // Pre: None.                                                 
     // Post: None. (next_ delete'd)   
-	// No-Throw Guarantee
+	// No-Throw exception guarantee
     ~LLNode()                                                      
     { delete next_; }                                              
 };                                                                 
@@ -51,11 +51,11 @@ struct LLNode {
 
 
 // class SList
-// Creates a Linked List. It also has a function to reverse the Linked List
+// standard linked list class with a few functions to help fasilitate a stack
 // Invariants:
 //      _size >= 0
 //      _head points to a null terminating linked list
-// This Class, and it's member functions, are exception-neutral
+// This Class, and its member functions, are exception-neutral
 template <typename T>
 class SList
 {
@@ -84,25 +84,25 @@ private:
 };
 
 // Default Constructor
-// Sets size to 0 and head to nullptr
+// Creates an empty linked list
 // Requirement on Types: None.
 // Pre: None.
 // Post:
 //      _size = 0, _head = nullptr
-// no throw guarantee
+// no throw exception guarantee
 template <typename T>
 SList<T>::SList(): _size(0), _head(nullptr)
 {
 }
 
 // Copy Constructor
-// copies from one SList to new SList
+// Copies from one SList to a new SList
 // Requirement on Types: None.
 // Pre: None.
 // Post:
 //      _size = other._size
 //      all nodes in the other SList are copied into new SList
-// strong guarantee
+// strong exception guarantee
 template <typename T>
 SList<T>::SList(const SList<T> & other): _size(0), _head(nullptr)
 {
@@ -123,12 +123,12 @@ SList<T>::SList(const SList<T> & other): _size(0), _head(nullptr)
 }
 
 // Copy Assignment
-// copies rhs to lhs and returns lhs
+// Copies rhs to lhs and returns lhs
 // Requirement on Types: None.
 // Pre: None.
 // Post:
 //      *this = rhs
-// strong guarantee
+// strong exception guarantee
 template <typename T>
 SList<T> & SList<T>::operator=(SList<T> rhs)
 {
@@ -138,11 +138,11 @@ SList<T> & SList<T>::operator=(SList<T> rhs)
 }
 
 // Deconstructor
-// deletes linked list
+// Deletes linked list
 // Requirement on Types: None.
 // Pre: None.
 // Post: None.
-// no throw guarantee
+// no throw exception guarantee
 template <typename T>
 SList<T>::~SList()
 {
@@ -155,7 +155,7 @@ SList<T>::~SList()
 // Pre: None.
 // Post:
 //      returns _size
-// no throw guarantee
+// no throw exception guarantee
 template <typename T>
 std::size_t SList<T>::size() const
 {
@@ -164,17 +164,13 @@ std::size_t SList<T>::size() const
 
 
 // read function
-// Given two input iterators that specify a range, in the usual manner. Returns nothing.
-// The value type of the iterators is assumed to be the same as that of the Linked List.
-// When the function is done, the items in the range are contained in the Linked List,
-// in the same order. Whatever data the Linked List previously contained have been discarded.
-// Requirement on Types: Able to dereference and increment inputIterator
-// Pre: begin <= end
-// Post:
-// old linked list is
-// linked list holds the range from begin to end
-//
-//strong guarantee
+// Loads the data given by the input iterators into the linked list.
+// Requirement on Types: Able to dereference and increment inputIterator 
+//						and interators point to the same value type as the linked list
+// Pre: begin and end spesify a valaid range
+// Post: old data is gone and a copy of the data between begin-end is 
+//		now contained in the linked list
+//strong exception guarantee
 template <class T>
 template <typename InputIterator>
 void SList<T>::read(InputIterator begin,InputIterator end)
@@ -192,11 +188,12 @@ void SList<T>::read(InputIterator begin,InputIterator end)
 
 
 // write function
-// Writes the items in the Linked List to the iterator, in order. Assumes that the iterator references the beginning of a range with enough space.
-// Requirement on Types: Able to dereference and increment OutputIterator
-// Pre: begin points to the beginning of a Linked List
-// Post:
-// strong guarantee
+// Writes the items in the Linked List to the iterator, in order.
+// Requirement on Types: Able to dereference and increment OutputIterator and output 
+//						 iterators refrences the same data type as the linked list
+// Pre: begin points to the beginning of a range with enough space.
+// Post: Writes the items in the Linked List to the iterator
+// Basic exception guarantee
 template<class T>
 template <typename OutputIterator>
 void SList<T>::write(OutputIterator begin) const
@@ -233,11 +230,11 @@ void SList<T>::reverse()
 }
 
 // const get_front function
-// grabs the first node's data
+// Gets a reference to the first node's data
 // Requirements on Types: none
 // pre: none
 // post: returns _head->data_
-// no throw guarantee
+// no throw exception guarantee
 template <typename T>
 const T & SList<T>::get_front() const
 {
@@ -246,11 +243,11 @@ const T & SList<T>::get_front() const
 
 
 // get_front function
-// grabs the first node's data
+// Gets a reference to the first node's data
 // Requirements on Types: none
 // pre: none
 // post: returns _head->data_
-// no throw guarantee
+// no throw exception guarantee
 template <typename T>
 T & SList<T>::get_front()
 {
@@ -263,7 +260,7 @@ T & SList<T>::get_front()
 // pre: none
 // post: _size--
 //       _head = _head->next_
-// no throw guarantee
+// no throw exception guarantee
 template <typename T>
 void SList<T>::remove_front()
 {
@@ -276,28 +273,26 @@ void SList<T>::remove_front()
 
 // insert_front function
 // inserts new node to the front of the linked list
-// Requirements on Types: none
+// Requirements on Types: copy constructor
 // pre: none
 // post: _size++
 //       _head = new node with dataIn
 //       new node points to old _head
-// strong guarantee
+// strong exception guarantee
 template <typename T>
 void SList<T>::insert_front(const T & dataIn)
 {
-	_head = new LLNode<T>(dataIn,_head);
+	_head = new LLNode<T>(dataIn,_head);  //pram _head is the "current" head not the "new one"
 	_size++;
 }
 
 // swap function
-// swaps two linked lists
+// Swaps two linked lists
 // Requirements on Types: none
 // pre: none
-// post: _size = other._size
-//       _head = other._head
-//       other._head = _head
-//       other._size = _size
-// no throw guarantee
+// post: _size has been swaped with other._size
+//       _head has been swaped with other._head
+// no throw exception guarantee
 template <typename T>
 void SList<T>::swap(SList<T> & other)
 {

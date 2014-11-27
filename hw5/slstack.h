@@ -17,7 +17,7 @@
 // class SLStack
 // functions as a Stack that uses SList to hold its data.
 // Invariants: None.
-// This Class, and it's member functions, are exception-neutral
+// This Class, and its member functions, are exception-neutral
 template <typename T>
 class SLStack
 {
@@ -41,12 +41,12 @@ private:
     SList<T> _data;
 };
 
-// empty function
-// returns true if stack is empty
+// Empty Function
+// Returns true if stack is empty
 // Requirement on Types: None
 // Pre: none
 // Post: returns true if stack is empty, if not empty returns false
-// No-Throw Guarantee
+// No-Throw Exception Guarantee
 template <typename T>
 bool SLStack<T>::empty() const
 {
@@ -54,12 +54,12 @@ bool SLStack<T>::empty() const
 }
 
 // top function
-// returns top item's value
-// Requirement on Types: None.
+// Returns a referance to the top item
+// Requirement on Types: none
 // Pre: None.
 // Post:
-//      returns top item's value
-// No-Throw Guarantee
+//      returns a reference to the top's value
+// No-Throw Exception Guarantee
 template <typename T>
 T & SLStack<T>::top()
 {
@@ -67,12 +67,12 @@ T & SLStack<T>::top()
 }
 
 // const top function
-// returns top item's value
+// Returns a const referance to the top item
 // Requirement on Types: None.
 // Pre: None.
 // Post:
-//      returns top item's value
-// No-Throw Guarantee
+//      Returns a const referance to the top item
+// No-Throw Exception Guarantee
 template <typename T>
 const T & SLStack<T>::top() const
 {
@@ -81,11 +81,11 @@ const T & SLStack<T>::top() const
 
 // push function
 // stores item on top of stack
-// Requirement on Types: None.
+// Requirement on Types:copy constructor
 // Pre: None.
 // Post:
 //      stores item on top of stack
-// Strong Guarantee
+// Strong Exception Guarantee
 template <typename T>
 void SLStack<T>::push(const T & val)
 {
@@ -93,12 +93,12 @@ void SLStack<T>::push(const T & val)
 }
 
 // pop function
-// removes top item from stack
+// Removes top item from stack
 // Requirement on Types: None.
 // Pre: None.
 // Post:
 //      removes top item from stack
-// No-Throw Guarantee
+// No-Throw Exception Guarantee
 template <typename T>
 void SLStack<T>::pop()
 {
