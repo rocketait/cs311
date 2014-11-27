@@ -59,7 +59,6 @@ public:
     SList(const SList<T> &other);
     SList & operator=(SList<T> rhs);
     ~SList();
-    
     size_type size() const;
     template <typename InputIterator>
     void read(InputIterator begin, InputIterator end);
@@ -70,6 +69,7 @@ public:
 	value_type & get_front();
 	void remove_front();
 	void insert_front(T & dataIn);
+	void swap(SList<T> & other);
 private:
 	size_type _size;
     LLNode<T> * _head;
@@ -106,8 +106,7 @@ template <typename T>
 SList<T> & SList<T>::operator=(SList<T> rhs)
 {
 	//copy is made in pram passing
-	_head = rhs._head;  //swap
-	_size = rhs._size;
+	swap(rhs);
     return *this;
 }
 
@@ -127,56 +126,74 @@ template <class T>
 template <typename InputIterator>
 void SList<T>::read(InputIterator begin,InputIterator end)
 {
-	/*
-	LLNode<T> * walker;
-	walker = _head;
-	while (begin != end)
-		{
-			if( walker != nullptr)
-			{
-				walker->data_ = *begin;
-				begin++;
-				walker = walker->next_;
-			}
-			else
-			{
-			// may need try-catch block //	
-				LLNode<T> * temp = new LLNode<T>(*begin);
-				walker->next_ = temp; // program sticks here
-				begin++;
-				walker = walker->next_;
-			}
-	
-		}
-	  */ 
+	SList<T> temp;
+	while(begin!=end)//while there is stuff
+	{
+		temp.insert_front(*begin);
+		begin++;
+	}
+	reverse();
+	swap(temp);
 }
 
 template<class T>
 template <typename OutputIterator>
 void SList<T>::write(OutputIterator begin) const
 {
- //   LLNode<T> * walker = _head;
-	//while (walker->next_ != nullptr)
-	//{
-	//	*begin = walker->data_;
-	//	begin++;
-	//	walker= walker->next_;
-	//}
+	LLNode<T> * walker = _head;
+	while (walker!= nullptr)
+	{
+		*begin = walker->data_;
+		begin++;
+		walker= walker->next_;
+	}
 }
 
 template <typename T>
 void SList<T>::reverse()
-{
-    LLNode<T> *save = nullptr;
-	LLNode<T> *temp = nullptr;
-	while(_head != nullptr)
+{/*
+	if(_head==nullptr) //0 times
+		return;
+	if(_head->next_==nullprt) //1 time
+		return;
+    LLNode<T> *save = _head;
+	LLNode<T> *temp = _head->next_;//where the next right is (may be null)
+
+	_head=temp;
+	save->next=nullptr;
+	if(_head->next_==nullptr)
+		return;
+	temp=_head->next_;
+	while
+
+	if(_head->next_==nullptr); // last item
+		return;
+
+	save=_head;  //save where head was at
+	_head=temp; // head goes right 1
+	temp=_head->next_; // where the next thing to the right is (may be null)
+	_head->next_=save; // point back to the left;
+
+
+
+
+
+	old= _head;
+	_head = _head->next_;
+	_temp = _head->next_;
+	_head->next_=_temp;
+
+
+	*/
+
+	/*while(_head != nullptr)
 	{
 		temp = _head;
 		_head = _head->next_;
 		temp->next_ = save;
 		save = temp;
 	}
-	_head = save;
+	_head = save;*/
 
 }
 
@@ -203,8 +220,13 @@ template <typename T>
 void SList<T>::insert_front(T & dataIn)
 {
 	_head = new LLNode<T>(dataIn,_head);
-	_size=_size++;
+	_size++;
 }
-
+template <typename T>
+void SList<T>::swap(SList<T> & other)
+{
+	std::swap(_size, other._size);
+	std::swap(_head, other._head);
+}
 
 #endif /* SLIST_H */
