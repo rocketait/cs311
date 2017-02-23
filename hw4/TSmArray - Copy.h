@@ -15,7 +15,7 @@
 #include <cstdlib>	  //for std::size_t
 #include <algorithm>  // for std::copy, std::swap
 
-
+//another change
 // class TSmArray
 // Creates a "Templated Smart-Array Class". It is not as good as std::vector class
 // but the array will be resizable, exception-safe, and efficient.
